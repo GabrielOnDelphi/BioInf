@@ -110,7 +110,7 @@ USES
 
 CONST
    RecordStart= 1;
-   FieldStart = 3;                                                                                { This is the start of sub-items in a 'normal' record }
+   FieldStart = 3;                                                                              { This is the start of sub-items in a 'normal' record }
 
 
 
@@ -120,9 +120,9 @@ CONST
 --------------------------------------------------------------------------------------------------}
 constructor TGbkObj.Create;
 begin
- inherited Create(aLog);                                                                                      { Should I call "inherited" in the constructor of a class derived from TObject or TPersistent? Yes. It does nothing, true, but it's harmless. I think there is value in being consistent about always calling the inherited constructor, without checking to see if there is, in fact, an implementation. Some will say that it's worth calling inherited Create because Embarcadero might add an implementation for TObject.Create in the future, but I doubt this is true; it would break existing code which does not call inherited Create. Still, I think it is a good idea to call it for the reason of consistency alNone. }
+ inherited Create(aLog);                                                                        { Should I call "inherited" in the constructor of a class derived from TObject or TPersistent? Yes. It does nothing, true, but it's harmless. I think there is value in being consistent about always calling the inherited constructor, without checking to see if there is, in fact, an implementation. Some will say that it's worth calling inherited Create because Embarcadero might add an implementation for TObject.Create in the future, but I doubt this is true; it would break existing code which does not call inherited Create. Still, I think it is a good idea to call it for the reason of consistency alNone. }
  FBody:= TStringList.Create;
- Clear;                                                                                          { Asta e intotdeauna ultimul }
+ Clear;                                                                                         { Asta e intotdeauna ultimul }
 end;
 
 
@@ -145,7 +145,7 @@ begin
    ACCESSION       := '';
    VERSION         := '';
    KEYWORDS        := '';
-   ORIGIN          := '';                                                                        { Aici e secventa propriu zisa:  1 ggggactggg acttctgggt tgactggaag gatcgtcgta tgtggccgac ggtcgtgccg }
+   ORIGIN          := '';                                                                       { Aici e secventa propriu zisa:  1 ggggactggg acttctgggt tgactggaag gatcgtcgta tgtggccgac ggtcgtgccg }
 
    with SOURCE DO
     begin
@@ -402,7 +402,7 @@ begin
     MarkBegin:= Pos  ('"', StrArray[i]);
     MarkEnd  := PosEx('"', StrArray[i], MarkBegin+1);
 
-    if MarkEnd= 0 then                                                                              { daca MarkEnd=0 inseamna ca... }
+    if MarkEnd= 0 then                                                                             { daca MarkEnd=0 inseamna ca... }
      begin
       MarkEnd:= PosEx('"', StrArray[i+1], 1);
       if MarkEnd=0
@@ -417,7 +417,7 @@ begin
      begin
       Result:= CopyTo(StrArray[i], MarkBegin+1, MarkEnd-1);
       break;
-     end;                                                                                           { ...acest camp nu e rupt pe doua randuri }
+     end;                                                                                          { ...acest camp nu e rupt pe doua randuri }
    end;
 end;
 
@@ -474,10 +474,6 @@ function TGbkObj.Bases: BaseString;
 begin
  Result:= Records.Origin;
 end;
-
-
-
-
 
 
 

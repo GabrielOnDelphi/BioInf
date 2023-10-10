@@ -27,7 +27,7 @@ TYPE
      procedure  SaveAsSEQ    (CONST sFileName: string);
      procedure  SaveAsTxt    (CONST sFileName: string);                                 { SAVE AS TXT }
      procedure  Save(Wrap: Boolean);
-     procedure  Save_AutoDetect;                                               { returns '' is everything was OK }
+     procedure  Save_AutoDetect;                                                         { returns '' is everything was OK }
 
      property   Bases: BaseString read FBases     Write SetBases;
   end;
@@ -61,12 +61,12 @@ end;
 {--------------------------------------------------------------------------------------------------
    LOAD FROM FILE
 --------------------------------------------------------------------------------------------------}
-function TFastaObj.LoadFromFile(FullFileName: string; CleanEnds: Boolean= true): Boolean;        { If CleanEnd = True, then clean up sequences during import: Remove the N bases at the ends of the sequence (not also at the middle) }
+function TFastaObj.LoadFromFile(FullFileName: string; CleanEnds: Boolean= true): Boolean;               { If CleanEnd = True, then clean up sequences during import: Remove the N bases at the ends of the sequence (not also at the middle) }
 VAR Lines: TStringList;
     Baze: string;
     i: Integer;
 begin
- Clear;                                                                                          { ABSOLUT NECESAR }
+ Clear;                                                                                                 { ABSOLUTELLY NECESAR }
 
  if NOT FileExists(FullFileName) then
   begin
@@ -120,7 +120,7 @@ begin
     if IsPart then
      begin
       i:= Pos('>', Lines.Text);                                                                  { Find the sencond comment }
-      Lines.Text:= system.COPY(Lines.Text, 1, i-1);                                                     { Copy from start to second comment }
+      Lines.Text:= system.COPY(Lines.Text, 1, i-1);                                              { Copy from start to second comment }
      end;
 
     { Read bases }
@@ -198,7 +198,7 @@ end;
 
 
 
-procedure TFastaObj.Save_AutoDetect;                                                       { Auto detect save type }
+procedure TFastaObj.Save_AutoDetect;                                                               { Auto detect save type }
 begin
  if IsFas(FileName)
  then SaveAsFasta(FileName, TRUE)
@@ -213,7 +213,7 @@ end;
 
 
 
-procedure TFastaObj.Save(Wrap: Boolean);                                                                         {TODO: Later. Rename it back to 'Save' }
+procedure TFastaObj.Save(Wrap: Boolean);                                                           {TODO: Later. Rename it back to 'Save' }
 begin
  SaveAsFasta(FileName, Wrap);
 end;
@@ -224,8 +224,6 @@ begin
  FBases:= CubicDNA.CleanSequence(Value, FALSE);
  FBases:= CubicDNA.RemoveGaps(FBases);
 end;
-
-
 
 
 

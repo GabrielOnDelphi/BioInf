@@ -205,7 +205,7 @@ VAR
 
   { READ POINTERS }
   for p:= 1 to Side.NrOfPtrs DO
-    FStream.Read (Side.Ptr2Smpl[p], 2);                                                   { NORMAL READ }
+    FStream.Read (Side.Ptr2Smpl[p], 2);                                                       { NORMAL READ }
  end;
 
 
@@ -217,7 +217,7 @@ VAR
   //       We MUST fille the arrays with zeros because in some cases not all traces have the same number of elements. For details, see how NoOfSamples is initialized (to the longest trace): http://stackoverflow.com/questions/39960356/how-to-create-a-procedure-like-setlength-that-also-zeros-the-memory/39960664#39960664
   //       FillChar(Trace.Points[0], length(Trace.Points)* SizeOf(word), 0);
 
-  FStream.Position:= Trace.Offset;                                                                  { READ TRACE 1 }
+  FStream.Position:= Trace.Offset;                                                              { READ TRACE 1 }
   for t:= 0 TO Trace.NumberOf-1 DO
    begin
     FStream.Read(Trace.Points[t], 2);
@@ -496,7 +496,7 @@ end;
 
 
 {===============================================================================
-                                 VERIFICARI
+   VERIFICATIONS
 ===============================================================================}
 
 { 1. }
@@ -529,7 +529,7 @@ begin
 
  { Some ABIs points to a sample that does not exists (higher than NoOfSamples) }
  for p:= 1 to Side.NrOfPtrs DO
-  if Side.Ptr2Smpl[p]> NoOfSamples                                  { jeffrey.s.douglass@gmail.com reported a sample 'p61_1_CP43_SP1F_O14.ab1' that has this problem }
+  if Side.Ptr2Smpl[p]> NoOfSamples                                  { jeffrey reported a sample 'p61_1_CP43_SP1F_O14.ab1' that has this problem }
   then
     begin
       Log.AddVerb(Format('The base %d points to sample %d which is out of range. Current number of samples %d. Fixed.', [p, Side.Ptr2Smpl[p], NoOfSamples]));
@@ -567,7 +567,7 @@ begin
       begin
         Result:= TRUE;
         NoErrors:= FALSE;
-        if CurrentPointer+1<= NoOfSamples                                                        { make sure you don't assign to a sample that doesn't exists }
+        if CurrentPointer+1<= NoOfSamples                                                          { make sure you don't assign to a sample that doesn't exists }
         then Side.Ptr2Smpl[NextBase]:= CurrentPointer+ 1                                           { make this BASE to point to the next SAMPLE }
         else Side.Ptr2Smpl[NextBase]:= 0;
         Log.AddVerb('Invalid pointer to sample: '+ IntToStr(Side.Ptr2Smpl[NextBase]) +'. Fixed.');
@@ -580,10 +580,10 @@ end;
 
 
 
-procedure TAbiObj.CheckFirstElem(VAR Side: TSide);                                                 {VERIFIC PRIMUL ELEMENT}
+procedure TAbiObj.CheckFirstElem(VAR Side: TSide);                                               {VERIFIC PRIMUL ELEMENT}
 VAR i: Integer;
 begin
- if (Side.Ptr2Smpl[ctCromaIndex+1]- Side.Ptr2Smpl[ctCromaIndex  ]> 3* spatiere)                    { if there is a big gap between pointers then something must be wrong (one of the bases points to a wrong position way back into the chromatogram) }
+ if (Side.Ptr2Smpl[ctCromaIndex+1]- Side.Ptr2Smpl[ctCromaIndex  ]> 3* spatiere)                  { if there is a big gap between pointers then something must be wrong (one of the bases points to a wrong position way back into the chromatogram) }
  OR (Side.Ptr2Smpl[ctCromaIndex  ]> Side.Ptr2Smpl[ctCromaIndex+1]) then
   begin
    i:= Side.Ptr2Smpl[ctCromaIndex+1]- spatiere;
@@ -595,26 +595,26 @@ end;
 
 
 
-function TAbiObj.CorrectBaseOrder(VAR Side: TSide): Boolean;                                       { Returns TRUE if invalid base pos found }
+function TAbiObj.CorrectBaseOrder(VAR Side: TSide): Boolean;                                     { Returns TRUE if invalid base pos found }
 VAR NewPos, CurBase: Cardinal;
 begin
  Result:= FALSE;
 
  { Cazul VIENA LAB }
- { Cazul in care primii doi pointeri sunt mai mari decat restul: 491 503, 257 267 281 298.     d:\Biology\SAMPLES\ABI - berndt@viennalab.com bases shifted with 14\893_UTR-F1___.ab1  }
+ { Cazul in care primii doi pointeri sunt mai mari decat restul: 491 503, 257 267 281 298.       viennalab case/ bases shifted with 14\893_UTR-F1___.ab1  }
  { This must be FIRST! }
  for CurBase:= 4 downto 1 DO
-  if Side.Ptr2Smpl[CurBase] > Side.Ptr2Smpl[CurBase+ 1]  then                                           { Pointer is shifted to right }
+  if Side.Ptr2Smpl[CurBase] > Side.Ptr2Smpl[CurBase+ 1]  then                                    { Pointer is shifted to right }
      begin
       Result:= TRUE;
-      Side.Ptr2Smpl[CurBase]:= Side.Ptr2Smpl[CurBase+ 1] -1;                                 { Brute force solution }
+      Side.Ptr2Smpl[CurBase]:= Side.Ptr2Smpl[CurBase+ 1] -1;                                     { Brute force solution }
       Log.AddVerb('Invalid pointer position at the beginning of the chromatogram (base no:' + IntToStr(CurBase)+ '). Fixed.');
      end;
 
 
  { Check current base agains the next base }
  for CurBase:= 1 to Side.NrOfBases-1 DO
-  if Side.Ptr2Smpl[CurBase] > Side.Ptr2Smpl[CurBase+ 1] then                                           { Pointer is shifted to right }
+  if Side.Ptr2Smpl[CurBase] > Side.Ptr2Smpl[CurBase+ 1] then                                     { Pointer is shifted to right }
    begin
     Result:= TRUE;
     Side.Ptr2Smpl[CurBase]:= Side.Ptr2Smpl[CurBase-1]+ spatiere;                                 { Brute force solution }
@@ -638,7 +638,7 @@ end;
 procedure TAbiObj.CheckLastElem(VAR Side: TSide);
 VAR correction: Cardinal;
 begin
- if Side.Ptr2Smpl[Side.NrOfPtrs] <= Side.Ptr2Smpl[Side.NrOfPtrs- 1] then                           { daca ultimul pointer e mai mic decat penultimul pointer }
+ if Side.Ptr2Smpl[Side.NrOfPtrs] <= Side.Ptr2Smpl[Side.NrOfPtrs- 1] then    { daca ultimul pointer e mai mic decat penultimul pointer }
   begin
     { Set the wrong pointer to the end of chroma }
     correction:= Side.Ptr2Smpl[Side.NrOfPtrs-1]+ spatiere;
@@ -735,267 +735,4 @@ end;
 
 
 
-end.(*==================================================================================================================
-
-
- 
-
-program in C++
-
-   i:= 1;
-   fspacing:= 0;
-   while i<= Side1.NrOfBases-1 DO
-    begin
-     if Side.Ptr2Smpl[i] < Side.Ptr2Smpl[i-1] then
-       begin
-        mesaj(Format('Base positions are not in order. Fixing pos %d= %d %s with pos %d= %d %s', [i-1, Side.Ptr2Smpl[i-1], Side1.BaseArray[i-1], i, Side.Ptr2Smpl[i], Side1.BaseArray[i] ]));
-
-        { pass 1 - find end of region }
-        start:= i-1;
-        poz:= Side.Ptr2Smpl[i-1] + fspacing;
-        while (i < Side1.NrOfBases)  AND  (Side.Ptr2Smpl[i] < Poz) DO
-          begin
-           inc(i);
-           Poz:= Poz+ fspacing;
-          end;
-
-        { calculate average base spacing }
-        if   i < Side1.NrOfBases
-        then fspacing:= (Side.Ptr2Smpl[i] - Side.Ptr2Smpl[start]) div (i-start);
-
-        { pass 2 - adjust }
-        i:= start + 1;
-        poz:= Side.Ptr2Smpl[i-1] + fspacing;
-        while (i < Side1.NrOfBases)  AND  (Side.Ptr2Smpl[i] < Poz) DO
-          begin
-           inc(i);
-           Side.Ptr2Smpl[i]:= poz;
-           Poz:= Poz+ fspacing;
-          end;
-       end
-      else Inc(i);
-    end;
-
-
-
-   {CORECTEZ ORDINEA BAZELOR 2}
-   RamLog:= 'Second pass:'+CRLF;
-   i:= 1;
-   NoErrors:= True;
-   while i<= Side1.NrOfBases-1 DO
-     if Side1.Ptr2Smpl[i] > Side1.Ptr2Smpl[i+1] then
-       begin
-        RamLog:= RamLog+ (Format('Pos %d= %d %s > pos %d= %d %s', [i, Side1.Ptr2Smpl[i], Side1.BaseArray[i], i+1, Side1.Ptr2Smpl[i+1], Side1.BaseArray[i+1] ])) + crlf;
-        median:= (Side1.Ptr2Smpl[i+1] - Side1.Ptr2Smpl[i-1]) div 2;
-        Side1.Ptr2Smpl[i]:= Side1.Ptr2Smpl[i-1] + median;
-        Inc(i);
-        NoErrors:= False;
-        WriteLog:= True;
-       end
-     else Inc(i);
-   StringToFile_('Corrupted Abi detected 2.txt.RamLog', RamLog, true);
-
-
-
-
-   SCRIU DETALII
-   s:= s+ 'The file is ' + FileName+ CRLF;
-   s:= s+ 'Side1.NrOfBases= '  + i2s(Side1.NrOfBases)+ CRLF;
-   s:= s+ 'NoOfSamples= '+ i2s(NoOfSamples)+ CRLF;
-   s:= s+ 'Side.NrOfPtrs1= '+ i2s(Side1.NrOfPtrs)+ CRLF;
-   s:= s+ '----'+ LBRK;
-   for i:= 1 to Side1.NrOfBases DO
-    begin
-     PtrSmpl:= Side1.Ptr2Smpl[i];                                                                  { trebuie sa fie egal cu numarul de baze DECI asocierea se face de la BAZE CATRE SAMPLE-uri }
-     s:= s+ i2s(i)+ '  '+ Side1.BaseArray[i]+ '  '+ i2s(PtrSmpl)+ CRLF;
-    end;
-   StringToFile_(ExtractFileName(FileName)+ ' detail.txt', s, true);
-
-
-
-
-   TEMPORAR !!!!!!!! - scrie cele doua siruri de base pe HDD
-   s:= Side1.BaseArray; if Side1.BaseArray <> Side2.BaseArray then s:= s+ CRLF+ Side2.BaseArray+ CRLF+ 'THE BASES FIELDS ARE different!'; StringToFile_(ExtractOnlyName(FName)+' [autosaved].txt', s, True);
-
-
-
-
-
-
-
-   function TAbiObj.DetectWrongPtr2Smpl: Integer;
-   VAR i: Cardinal;
-       Ptr2Smpl, Highest, AllBases: Integer;
-   begin
-    { FIND THE HIGHEST WRONG POINTER SAMPLE }
-    { Some ABIs points to a sample that does not exists (higher than NoOfSamples)
-      So instead of reserving NoOfSamples bytes of memory I need to reserve more, conform with the highest wrong sample }
-    Highest:= 0;
-    for i:= 1 to Side1.NrOfBases DO
-     begin
-      Ptr2Smpl:= ABI.Ptr2Smpl[i];                                                                  { trebuie sa fie egal cu numarul de baze DECI asocierea se face de la BAZE CATRE SAMPLE-uri }
-      if Ptr2Smpl> Highest
-      then Highest:= Ptr2Smpl;
-     end;
-    if Highest>= NoOfSamples
-    then SetLength(CromaMX, Highest+1)                                                             { this is for invalid ABI files }
-    else SetLength(CromaMX, NoOfSamples+1);                                                        { this should be for valid ABI files }
-   end;
-
-
-
-
-
-
-   (* TEMPORAT SUSPENDAT
-
-   function TAbiObj.ConvertAbi2SCF(FilePath: string; Obj: TScfObj): string;
-   VAR
-      FAbi: TAbiStructure;
-      i: Integer;
-   begin
-    Result:= '';
-     //LoadABI_File(FilePath, FAbiStruct);
-
-     { Transfer TRACE-URILE  v30}
-     Obj.SCF.H.SamplesNr       := FAbiStruct.Trace1.NumberOf;                                      { Longword }
-     Obj.SCF.H.SampleSize      := 2;                                                               { Longword }
-     SetLength(Obj.SCF.TraceA, Obj.SCF.H.SamplesNr* Obj.SCF.H.SampleSize);                         { setez marimea matricei pentru Trace-ul A }
-     SetLength(Obj.SCF.TraceC, Obj.SCF.H.SamplesNr* Obj.SCF.H.SampleSize);                         { setez marimea matricei pentru Trace-ul C }
-     SetLength(Obj.SCF.TraceG, Obj.SCF.H.SamplesNr* Obj.SCF.H.SampleSize);                         { setez marimea matricei pentru Trace-ul G }
-     SetLength(Obj.SCF.TraceT, Obj.SCF.H.SamplesNr* Obj.SCF.H.SampleSize);                         { setez marimea matricei pentru Trace-ul T }
-
-     { Transfer BAZELE }
-     Obj.SCF.H.BasesNr:= FAbiStruct.Base.NumberOf;        
-     SetLength(Obj.SCF.BaseArray,  Obj.SCF.H.BasesNr* SizeOf(TBase_v30));                          { Matricea de baze= numarul_de_baze * marimea_unei_baze}
-     for i:=1 to Obj.SCF.H.BasesNr DO Obj.SCF.BaseArray[i].PeakIndex:= i;                          { <------  <------  <------  <------  <------  <------  <------ }
-     for i:=1 to Obj.SCF.H.BasesNr DO Obj.SCF.BaseArray[i].Base:= FAbiStruct.Base.Array1[i];       { in Side2.BaseArray sunt tinute bazele originale, nealterate in urma unei posibile editari }
-
-     Obj.SCF.H.MagicNumber     := '.Obj.SCF';
-     Obj.SCF.H.version         := '3.00';
-     Obj.SCF.H.Comments        := Obj.SCF.H.Comments+CRLF
-                            + 'PRGM=Baser version 1.0 (May 2005)'+CRLF
-                            + 'EDIT='+ DateToStr(Date);
-     Obj.SCF.H.comments_size   := SizeOf(Obj.SCF.H.Comments);
-     Obj.SCF.PrivateData       := Obj.SCF.PrivateData+ 'Converted from FAbiStruct to Obj.SCF with BASER v1.0';
-     Obj.SCF.H.PrivateSize     := SizeOf(Obj.SCF.PrivateData);
-
-     {offsets}
-     Obj.SCF.H.SamplesOffset   := 0                    + SizeOf(Obj.SCF.H)        + 1;             { DEPLASAMENT + MARIME }
-     Obj.SCF.H.BasesOffset     := Obj.SCF.H.SamplesOffset  +(SizeOf(Obj.SCF.TraceA)*4)+ 1;         { DEPLASAMENT + MARIME }
-     Obj.SCF.H.comments_offset := Obj.SCF.H.BasesOffset    + SizeOf(Obj.SCF.BaseArray)+ 1;         { DEPLASAMENT + MARIME }
-     Obj.SCF.H.PrivateOffset   := Obj.SCF.H.comments_offset+ SizeOf(Obj.SCF.Comments) + 1;         { DEPLASAMENT + MARIME }
-
-     {padding}
-     for i:= 0 to 17 do
-     Obj.SCF.H.spare[i]        := 0;
-     Obj.SCF.H.bases_left_clip := 0;
-     Obj.SCF.H.bases_right_clip:= 0;
-     Obj.SCF.H.code_set        := 0;
-
-     Result:= DisplayAbiInfo(FAbiStruct);
-   end;
-
-
-
-
-procedure TAbiObj.DebugToTxt(Path: string);
-VAR   Smpl: Integer;
-      Final, Rw1, Rw2, Rw3: string;
-begin
- MesajWarning('TAbiObj.DebugToTxt CRLF Not fully implemented!');
- Rw1:= 'Sample:   ';
- Rw2:= 'Bases :   ';
- Rw3:= 'Base pos: ';
-
- for Smpl:= 1 to NoOfSamples DO
-  begin
-   Rw1:= Rw1+ i2s(Smpl)+ Tab;;
-   Rw2:= Rw2+     CromaMX[Smpl].Base+ Tab;
-   Rw3:= Rw3+ i2s(CromaMX[Smpl].BasePos)+ Tab;
-  end;
-
- Final:= Rw1+ CRLF+ Rw2+ CRLF+ Rw3+ CRLF
-   +CRLF
-   +CRLF+ 'Details:'
- //+CRLF+ '  Side1.NrOfBases '+ i2s(NrOfBasesCellMX)
- //+CRLF+ '  NoOfSamples '+ i2s(NoOfSamples)
-   +CRLF+ '  File '+ FFileName
-   +CRLF;
- StringToFile_(Path, Final, TRUE);
-end;
-
-
-
-function TAbiObj.CorrectBaseOrder(VAR Side: TSide): Boolean;                                       { Returns TRUE if invalid base pos found }
-VAR start, CurBase: Cardinal;
-    fspacing, pos: real;
-begin
- CurBase:= 2;
- Result:= FALSE;
-
- writeBases(side, AppData.CurFolder+ 'abi1.txt');
-
- //for CurBase:= 1 to Side.NrOfBases DO
- WHILE CurBase < side.NrOfBases DO
-
-  if Side.Ptr2Smpl[CurBase] > Side.Ptr2Smpl[CurBase+ 1]                                            { Pointer is shifted to right }
-  then
-     begin
-      Result:= TRUE;
-      Side.Ptr2Smpl[CurBase]:= Side.Ptr2Smpl[CurBase-1]+ spatiere;                                 { Brute force solution }
-     // Log.AddVerb('+++---------------------------------Invalid base position at ' + IntToStr(CurBase)+ '. Fixed.');
-      inc(CurBase);
-     end
-  else
-
-   if Side.Ptr2Smpl[CurBase] < Side.Ptr2Smpl[CurBase- 1]                                            { Pointer is shifted to left. Bucata asta e translatata din C - c:\MyProjects\Projects Biology\BASER\Resurse - Docs\ FILE STRUCTURE\ ABI\ABI error corection in C++\seqIOABI.pas }
-   then
-     begin
-      Result:= TRUE;
-      fSpacing:= 0;
-
-      { pass 1 - find end of region }
-      start:= CurBase - 1;
-      pos:= Side.Ptr2Smpl[CurBase - 1]+ fspacing;
-      while (CurBase < Side.NrOfBases) and (Side.Ptr2Smpl[CurBase] < pos) do
-       begin
-         inc(CurBase);
-         pos:= pos+ fspacing;
-       end;
-
-      { calculate average base spacing }
-      { $Warnings off}
-      if (CurBase < Side.NrOfBases)
-      then fspacing:= (Side.Ptr2Smpl[CurBase] - Side.Ptr2Smpl[start]) / (CurBase - start);
-      { $Warnings on}
-
-      { pass 2 - adjust }
-      CurBase:= start + 1;
-      pos:= Side.Ptr2Smpl[CurBase - 1] + fspacing;
-      while (CurBase < Side.NrOfBases)
-        AND (Side.Ptr2Smpl[CurBase] < pos) do
-       begin
-         inc(CurBase);
-         Side.Ptr2Smpl[CurBase]:= round(pos);
-         Log.AddVerb('------------------------------------Invalid base position at ' + IntToStr(CurBase)+ '. Fixed.');
-         pos:= pos+ fspacing;
-       end;
-     end
-   else Inc(CurBase);
-
-
- writeBases(side, AppData.CurFolder+ 'abi2.txt');
-end;
-
-
-{
- TQualityInfo= record
-   QvCount: Longword;
-   QvOffset: Longword;
-   QvMX  : array of Word;                                                          { unsigned 2-octeti integer. in C = unsigned short
-  end;
-
- TPtr2Sample  = array of Word;                                                     { Array of pointers from Bases to Samples (peaks) matrix. INDEXED in 1!
- }
-
+end.

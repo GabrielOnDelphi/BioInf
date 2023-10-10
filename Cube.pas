@@ -18,7 +18,7 @@ UNIT Cube;
 INTERFACE
 USES
    Winapi.Windows, System.SysUtils, System.Classes, Vcl.Graphics,
-   ccCore, ccINIFile, CubeImporter, {cGraphics,} CubicDNA, clRamLog, ccRichLog;
+   ccCore, ccINIFile, CubeImporter, CubicDNA, clRamLog, ccRichLog;
 
 TYPE
  TCubeObj = class(TCubeImport)

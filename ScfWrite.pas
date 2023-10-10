@@ -24,7 +24,7 @@ TYPE
     procedure writeSamples;
     procedure writeBases;
     procedure deltaDeltaCompact(VAR DiskTrace: TDiskTrace);                                        { used by Writer }
-  public                                                                                           { STRUCTURA FISIERULUI SCF: }
+  public
     function SaveToFile(CONST FullFileName: string): Boolean;
  end;
 
@@ -40,16 +40,16 @@ USES ccBinary;
 --------------------------------------------------------------------------------------------------}
 function TScfWriter.SaveToFile(CONST FullFileName: string): Boolean;
 CONST
-   NonNulString= ' ';                                                                           { I can't write an empty string to disk so I have to insert a string }
+   NonNulString= ' ';                                                                            { I can't write an empty string to disk so I have to insert a string }
 begin
  FFileName:= FullFileName;
 
  if  (H.SampleSize<> 1)
  AND (H.SampleSize<> 2)
- then H.SampleSize:= 1;                                                                            { fake things for older style SCF }
+ then H.SampleSize:= 1;                                                                          { fake things for older style SCF }
 
  H.MagicNumber:= '.scf';
- Comments:= Comments+ NonNulString;                                                           { I can't write an empty string to disk so I have to insert a string }
+ Comments:= Comments+ NonNulString;                                                              { I can't write an empty string to disk so I have to insert a string }
 
  FStream.Position:= 0;
  writeHeader;
@@ -107,14 +107,14 @@ Var i: Integer;
     DiskTraceG : TDiskTrace;                                                                       { 4 trace-rui formeaza un SAMPLE MATRIX }
     DiskTraceT : TDiskTrace;                                                                       { 4 trace-rui formeaza un SAMPLE MATRIX }
 
-{sub}procedure CuanticWrite(Smpl: Smallint);                                    { int2 = signed 16bit }
+{sub}procedure CuanticWrite(Smpl: Smallint);                                                       { int2 = signed 16bit }
   begin
    if   H.SampleSize = 1
-   then FStream.Write (Smpl, 1)                                                            { Write  8 bit samples from a V3.x file }
+   then FStream.Write (Smpl, 1)                                                                    { Write  8 bit samples from a V3.x file }
    else
     begin
      Smpl:= System.Swap(Smpl);
-     FStream.Write(Smpl, 2);                                                               { Write 16 bit samples from a V3.x file }
+     FStream.Write(Smpl, 2);                                                                       { Write 16 bit samples from a V3.x file }
     end;
   end;
 
@@ -211,4 +211,3 @@ end;
 
 
 end.
-

@@ -1,4 +1,3 @@
-
 UNIT ParseGenBankW;
 
 {===============================================================================
@@ -61,7 +60,7 @@ USES
 --------------------------------------------------------------------------------------------------}
 constructor TGbkObjExp.Create;
 begin
- inherited Create(aLog);                                                                                        { Should I call "inherited" in the constructor of a class derived from TObject or TPersistent? Yes. It does nothing, true, but it's harmless. I think there is value in being consistent about always calling the inherited constructor, without checking to see if there is, in fact, an implementation. Some will say that it's worth calling inherited Create because Embarcadero might add an implementation for TObject.Create in the future, but I doubt this is true; it would break existing code which does not call inherited Create. Still, I think it is a good idea to call it for the reason of consistency alNone. }
+ inherited Create(aLog);                                                                           { Should I call "inherited" in the constructor of a class derived from TObject or TPersistent? Yes. It does nothing, true, but it's harmless. I think there is value in being consistent about always calling the inherited constructor, without checking to see if there is, in fact, an implementation. Some will say that it's worth calling inherited Create because Embarcadero might add an implementation for TObject.Create in the future, but I doubt this is true; it would break existing code which does not call inherited Create. Still, I think it is a good idea to call it for the reason of consistency alNone. }
  NameUse_Strain  := TRUE;                                                                          { which fields should be included in file's name }
  NameUse_Clone   := TRUE;
  NameUse_Isolate := TRUE;
@@ -110,7 +109,7 @@ function TGbkObjExp.AsText: string;                                             
 VAR
    i: Integer;
 
- procedure AddRecord(RecordName, Data: string; Force: Boolean = FALSE);                                 { Force = force title to be written to disk even if Line is empty }
+ procedure AddRecord(RecordName, Data: string; Force: Boolean = FALSE);                             { Force = force title to be written to disk even if Line is empty }
  VAR
     i: Integer;
     TSL: TStringList;
@@ -267,11 +266,11 @@ begin
 
   { Check name lenght }
   if Length(FileName) < Max_Path
-  then ObjFasta.SaveAsFasta(FileName, Wrap)                                               { TRY TO SAVE AS FASTA }
+  then ObjFasta.SaveAsFasta(FileName, Wrap)                                          { TRY TO SAVE AS FASTA }
   else RamLog.AddWarn(' File name is too long: '+ FileName)
  FINALLY
   FreeAndNil(ObjFasta);
- END; 
+ END;
 end;
 
 
@@ -290,13 +289,13 @@ end;
    GENEREAZA NUMELE
 --------------------------------------------------------------------------------------------------}
 
-function TGbkObjExp.GenerateNameFromField: string;                                                    { cand am multi GenBank }
+function TGbkObjExp.GenerateNameFromField: string;                                   { cand am multi GenBank }
 VAR
    strain, definit, isolate,
    clone, gene, product,
    organism, version: string;
 begin
- if (Records.FEATURES.organism <> '') AND NameUse_Organism                             { which Records should be included in file's name }
+ if (Records.FEATURES.organism <> '') AND NameUse_Organism                           { which Records should be included in file's name }
  then organism:= Records.FEATURES.organism;
 
  if (Records.DEFINITION <> '')

@@ -4,7 +4,6 @@ UNIT ReadBasicSample;
 {===========================================================================================
  Heracle BioSoft SRL
  2016.04.28
-
  Common ancestor for: TCubeAbstract, TFastaObj, TGbkObj
 ============================================================================================}
 
@@ -13,18 +12,17 @@ INTERFACE
 USES System.SysUtils, System.StrUtils, ccCore, ccINIFile, CubicDNA, clRamLog, ccRichLog;
 
 CONST
-   //ctCommentAd= ' | Created with DNA Baser demo.';
-   ctDefaultRowLengt= 70;                                                                          { Default row length for FASTA file. After this length the BASES string will be broken to a new row }
+   ctDefaultRowLengt= 70;                                                                  { Default row length for FASTA file. After this length the BASES string will be broken to a new row }
 
 TYPE
    RDetectedVector= record
-      Starts: Integer;                                                                             { The right vector will start at position 10  (for example) and end at 50 }
-      Ends  : Integer;                                                                             { The right vector will start at position 100 (for example) and end at 90 (backwords) }
+      Starts: Integer;                                                                     { The right vector will start at position 10  (for example) and end at 50 }
+      Ends  : Integer;                                                                     { The right vector will start at position 100 (for example) and end at 90 (backwords) }
       Name: string;
       Value: BaseString;
    end;
 
-   RVectorData = record                                                                            { TCubeOnj and TSimpleSeq keeps the info about the vectors in this record }
+   RVectorData = record                                                                    { TCubeOnj and TSimpleSeq keeps the info about the vectors in this record }
      Detector : TObject;
      Left     : RDetectedVector;
      Right    : RDetectedVector;
@@ -34,20 +32,20 @@ TYPE
   TBasicSample = class(TObject)
    private
      FParentType: TBioFileType;
-     FComment: String;                                                                          { Pe HDD fisierele SEQ sunt stocate ca o cloectie de siruri separate de CRLF }
+     FComment: String;                                                                     { Pe HDD fisierele SEQ sunt stocate ca o cloectie de siruri separate de CRLF }
      procedure setComment (CONST Value: string);
      procedure setFileName(const Value: string);
    protected
      RamLog: TRamLog;
      FBases: BaseString;
-     function  getFileName: string;               virtual;       { This will be overriden in TCubeObj }
+     function  getFileName: string;               virtual;                                 { This will be overriden in TCubeObj }
      function  getNoBases: Integer;               virtual;
      procedure setNoBases (CONST Value: Integer); virtual;
      procedure GenerateComment;                   virtual;
    public
      Vectors     : RVectorData;
-     IsPart      : Boolean;                                                                        { True if this cube is a FASTA which is part of a multi-FASTA object }
-     CleanedVectors: string;                                                                       { It will not be created implicitelly by 'Create' but it will be freed by 'Destroy' }
+     IsPart      : Boolean;                                                                { True if this cube is a FASTA which is part of a multi-FASTA object }
+     CleanedVectors: string;                                                               { It will not be created implicitelly by 'Create' but it will be freed by 'Destroy' }
      FFileName   : string;
      constructor Create(aLog: TRamLog);
      destructor Destroy; override;
@@ -57,15 +55,15 @@ TYPE
      function   CommentIsEmpty: Boolean;
 
      procedure  RemoveAllGaps;
-     function   DetectedVectors: string;                                                           { Return a string containing the name of the Left and Right vectors }
-     procedure  VectorsClearColor; virtual;                                                        { All existent cells already marked as Vectors, are cleared. List of detected vectors is also cleared }
-     procedure  DetectVectors;  virtual;                                                           { Detect vectors. Set cell colors (blue) for the detected vectors. }
+     function   DetectedVectors: string;                                                   { Return a string containing the name of the Left and Right vectors }
+     procedure  VectorsClearColor; virtual;                                                { All existent cells already marked as Vectors, are cleared. List of detected vectors is also cleared }
+     procedure  DetectVectors;  virtual;                                                   { Detect vectors. Set cell colors (blue) for the detected vectors. }
      function   Search (CONST SearchStr: BaseString; Offset: Integer): Integer; virtual;
 
      property   Comment        : String       Read FComment      Write setComment;
-     property   ParentType     : TBioFileType Read FParentType   Write FParentType;                { What is the original provenience (input) of this Cube. Example: SCF, ABI, SEQ, FASTA, etc. Needed if the user wants to save this seq back to file (after he edited the seq).    The FParentType is the name of the file from which this object was loaded. Make sense only if the parent is a multi file (multiFasta, multiGBK) }
-     property   FileName       : string       Read getFileName     Write setFileName;                { The actual name. The user may change it. For contigs, it only contains the filename, without path. Path is extracted from ProjectName }
-     property   NoOfBases      : Integer      Read getNoBases    Write setNoBases;                 { are grija sa adune un 1 pt ca CellMX e indexat in 1 nu in 0 }  { Number of bases in Bases matrix.  IMPORTANT. BasesNr e diferit de BasesNrOrig pentru ca userul/asamblarea poate adauga baze noi in plus. Cand import un fisier o sa folosesc BasesNrOrig, insa dupa aceea o sa fol. BasesNr }
+     property   ParentType     : TBioFileType Read FParentType   Write FParentType;        { What is the original provenience (input) of this Cube. Example: SCF, ABI, SEQ, FASTA, etc. Needed if the user wants to save this seq back to file (after he edited the seq).    The FParentType is the name of the file from which this object was loaded. Make sense only if the parent is a multi file (multiFasta, multiGBK) }
+     property   FileName       : string       Read getFileName     Write setFileName;      { The actual name. The user may change it. For contigs, it only contains the filename, without path. Path is extracted from ProjectName }
+     property   NoOfBases      : Integer      Read getNoBases    Write setNoBases;         { are grija sa adune un 1 pt ca CellMX e indexat in 1 nu in 0 }  { Number of bases in Bases matrix.  IMPORTANT. BasesNr e diferit de BasesNrOrig pentru ca userul/asamblarea poate adauga baze noi in plus. Cand import un fisier o sa folosesc BasesNrOrig, insa dupa aceea o sa fol. BasesNr }
   end;
 
 
@@ -84,7 +82,7 @@ USES
 {--------------------------------------------------------------------------------------------------
    CONSTRUCTOR
 --------------------------------------------------------------------------------------------------}
-constructor TBasicSample.Create(aLog: TRamLog);                                                                   { TObject is never directly instantiated. Although it does not use programming language features that prevent instantiation, TObject is an abstract class. }
+constructor TBasicSample.Create(aLog: TRamLog);                                                           { TObject is never directly instantiated. Although it does not use programming language features that prevent instantiation, TObject is an abstract class. }
 begin
  inherited Create;                                                                                        { Should I call "inherited" in the constructor of a class derived from TObject or TPersistent? Yes. It does nothing, true, but it's harmless. I think there is value in being consistent about always calling the inherited constructor, without checking to see if there is, in fact, an implementation. Some will say that it's worth calling inherited Create because Embarcadero might add an implementation for TObject.Create in the future, but I doubt this is true; it would break existing code which does not call inherited Create. Still, I think it is a good idea to call it for the reason of consistency alNone. }
  Vectors.Detector:= NIL;
@@ -261,7 +259,4 @@ end;
 
 
 
-
-
-END.//============================================================================
-
+END.

@@ -131,7 +131,7 @@ end;
 procedure TMultiFasta.Add(FullFileName: string; Bases: BaseString; Comments: string);
 VAR aFasta: TFastaObj;
 begin
- aFasta:= TFastaObj.Create(RamLog);                                                                { Nu ii dau aici FREE. De asta se va ocupa 'List' }
+ aFasta:= TFastaObj.Create(RamLog);                                                                { List will release it }
  aFasta.FileName:= FullFileName;
  aFasta.RowLength:= RowLength;                                                                     { Default row length for FASTA file. After this length the BASES string will be broken to a new row }
  aFasta.Comment  := Comments;
@@ -197,7 +197,7 @@ begin
 
     { Protection against FASTA files that have no comment line }
     for i:= 0 to Lines.Count-1 DO
-      if Pos('>', Lines.Strings[i]) > 0 then                                                { Search the first ROW containig a valid entry (comment) }
+      if Pos('>', Lines.Strings[i]) > 0 then                                              { Search the first ROW containig a valid entry (comment) }
        begin
         CurLine:= i;
         Break;
@@ -205,7 +205,7 @@ begin
 
     TotalComments:= CountAppearance('>', Lines.Text);
     if TotalComments< 1
-    then RamLog.Addhint('No comment line detected!'); { Seq and txt files have no comment! }
+    then RamLog.Addhint('No comment line detected!'); { Seq and txt files have no comment!}
 
     { Split MULTI-FASTA in its sub-components }
     REPEAT
@@ -215,8 +215,8 @@ begin
       begin
         inc(CurLine);                                                                     { Treci la urmatoarea linie }
         if CurLine >= Lines.Count
-        then EXIT                                                                           { End of file. Exit. }
-        else Continue;                                                                      { Jump to next line, maybe it contains a '>' sign }
+        then EXIT                                                                         { End of file. Exit. }
+        else Continue;                                                                    { Jump to next line, maybe it contains a '>' sign }
       end;
 
      sComment:= Lines.Strings[CurLine];
@@ -224,7 +224,7 @@ begin
      { After getting the comments, go to the next line and pick up the bases }
      inc(CurLine);
 
-     { Build bases }                                                                        { Current sample may have bases spread over one or more lines. Search all rows that contains those bases, until I find the next comment line }
+     { Build bases }                                                                      { Current sample may have bases spread over one or more lines. Search all rows that contains those bases, until I find the next comment line }
      Baze:= '';
      WHILE (CurLine< Lines.Count)                                                         { pana nu mai am linii }
       AND (Pos('>', Lines.Strings[CurLine])< 1) DO                                        { pana dau de un comentariu }
@@ -235,25 +235,25 @@ begin
 
      { Has ads? }
      if AdsDetected(Baze)
-     then AllowProtein:= TRUE;                                                              { In Demo versions I will add a nag text. If the filter is active, it will remove that text so I have to disable the filter. }
+     then AllowProtein:= TRUE;                                                            { In Demo versions I will add a nag text. If the filter is active, it will remove that text so I have to disable the filter. }
 
      { FILTER invalid bases }
      if CleanEnds
-     then Baze:= TrimSequenceNs(Baze);                                                      { Remove the N bases from the ends of a sequences }
+     then Baze:= TrimSequenceNs(Baze);                                                    { Remove the N bases from the ends of a sequences }
 
      { Create new FASTA object }
-     aFasta:= TFastaObj.Create(RamLog);                                                     { Nu ii dau aici FREE. De asta se va ocupa 'List' }
+     aFasta:= TFastaObj.Create(RamLog);                                                   { Nu ii dau aici FREE. De asta se va ocupa 'List' }
      TRY
-       aFasta.FileName    := FullFileName;                                                  { See: TSmplImporter.GenerateVirtualNames }
+       aFasta.FileName    := FullFileName;                                                { See: TSmplImporter.GenerateVirtualNames }
        aFasta.AllowProtein:= AllowProtein;
-       aFasta.RowLength   := RowLength;                                                     { Default row length for FASTA file. After this length the BASES string will be broken to a new row }
+       aFasta.RowLength   := RowLength;                                                   { Default row length for FASTA file. After this length the BASES string will be broken to a new row }
        aFasta.Comment     := sComment;
        aFasta.Bases       := Baze;
-       aFasta.IsPart      := TotalComments> 1;                                              { Shows if this GBK is part of a multi-GBK object }
+       aFasta.IsPart      := TotalComments> 1;                                            { Shows if this GBK is part of a multi-GBK object }
        aFasta.ParentType  := bfFAS;
 
        { Store it }
-       if aFasta.NoOfBases >= ctMinimimSequence                                                              { If I have enough bases }
+       if aFasta.NoOfBases >= ctMinimimSequence                                           { If I have enough bases }
        then List.Add(aFasta)
        else
           begin
@@ -286,7 +286,7 @@ begin
       on E: Exception DO
        begin
         Result:= FALSE;
-        RamLog.AddError('Cannot load sample. '+ E.Message);                                            { Excpetion is handled here and does not propagate anymore }
+        RamLog.AddError('Cannot load sample. '+ E.Message);                                        { Excpetion is handled here and does not propagate anymore }
        end;
  END;
 end;
@@ -324,7 +324,7 @@ begin
  for i:= 0 to Count-1 DO
   begin
    LeadingZeros:= '['+ LeadingZerosAuto( i2s(i), Count-1 )+ '] ';
-   Fasta[i].FileName:= AppendBeforeName(Fasta[i].FileName, LeadingZeros);              { This will make from 'multi.fasta' something like '[01] multi.fsta', '[02] multi.fsta', '[03] multi.fsta' etc }
+   Fasta[i].FileName:= AppendBeforeName(Fasta[i].FileName, LeadingZeros);                          { This will make from 'multi.fasta' something like '[01] multi.fsta', '[02] multi.fsta', '[03] multi.fsta' etc }
   end;          
 end;
 
@@ -410,12 +410,10 @@ begin
   begin
     aFasta:= Fasta[i];
     if NoComments
-    then Result:= Result+ aFasta.Bases+ Separator                                          { Do not add comments AT ALL when saving file to disk. Just put one sequence on each line. Useful to build compact FASTA files. }
+    then Result:= Result+ aFasta.Bases+ Separator                                                  { Do not add comments AT ALL when saving file to disk. Just put one sequence on each line. Useful to build compact FASTA files. }
     else Result:= Result+ aFasta.Comment+ CRLF+ aFasta.Bases+ Separator;
   end;
 end;
-
-
 
 
 
