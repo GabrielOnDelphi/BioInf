@@ -3,14 +3,19 @@
 Library for reading microbiology DNA files (ABI, SCF, FASTA, etc).
 Requires LightSaber base library.
 
-
-Allows you to:  
+Has support for:
+ * SNP (Single Nucleotide Polymorphism)
+ * QV (base Quality Value)
+ * Integrated trimming engine (automatic bad-end trimming)
+ * Recalling of bad (N) peaks using proprietary algorithm 
+ * Automatic sequence direction (F/R)
+ * Reading and displaying the chromatogram data
  * read/write SCF files  
  * read ABI/AB/AB1/AB! files  
  * read/write FASTA files  
  * read/write GeneBank (GBK) files.  
   
- All this functionality is accessible with simple access to TCubeImport.Import(FileName)  
+The import functionality is accessible with a call to a single function: TCubeImport.Import(FileName)  
   
   TCube = class(TCubeAbstractSnp)    
   public   
