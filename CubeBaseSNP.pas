@@ -15,9 +15,9 @@ UNIT CubeBaseSNP;
    AreaRatio   : Double;                                                                           { Ratio (%) between polymorphic peak area and reference peak area. For example, a value of 10 means that the polymorphic peak area should be at least 10% of reference peak area. If the polymorphic peak area is under this value it is ignored. Default: 50%.
    OverlapArea : Integer;                                                                          { Overlap ratio (%) between polymorphic peak area and reference peak area. Ideally the peaks should fully overlap (the polymorphic peak should be under the reference peak). If the ratio is under this value, the mutation is ignored. Default: 70%.
 
-
   Test samples: d:\Biology\SAMPLES - Mutations\mutation between sequences\Staden mutations\
-==================================================================================================}
+
+=============================================================================================================}
 
 INTERFACE
 
@@ -219,10 +219,6 @@ end;
 
 
 
-
-
-
-
 function TCubeAbstractSnp.GetPeakHeightRatio(CONST BasePos: Integer): string;                      { Shown in RamLog }
 VAR Sample: Integer;
     NewBase, OrigBase, IUPAC: TBase;
@@ -245,20 +241,6 @@ begin
 
  SetLength(Trace.Height, 0);
 end;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

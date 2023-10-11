@@ -15,7 +15,7 @@ UNIT CubeBase;
     * SizeOf the RSample structure is 16 bytes because the structure is
       aligned to 8 bytes. If I use packed then the structure will be 12 bytes.
 
-==================================================================================================}
+=============================================================================================================}
 
 INTERFACE
 
