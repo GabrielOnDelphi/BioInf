@@ -35,3 +35,25 @@ The import functionality is accessible with a call to a single function: TCubeIm
  end; 
 
  The code was tested on millions of DNA samples over the years and works flawlessly. 
+
+-----------
+
+Next to come:   
+Code to import NextGen DNA sequence files such as SFF. SFQ, FAS.
+
+  Features:
+      + TrimEngine
+      + Assign(TSample)
+      + Average Quality
+      + Highest QV
+      + FindAdaptor
+      + Clip Left/Right
+      + Good Bases
+      + can work with sequences with length over 65535 bases
+      + Implements a single SFF read
+      + NoOfGoodBases      
+      + GoodBases
+      + Conversion to Fasta
+      + BuildQVGraph   
+      etc
+      
