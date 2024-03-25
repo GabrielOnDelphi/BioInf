@@ -1,9 +1,9 @@
 # BioInf
 
-Library for reading microbiology DNA files (ABI, SCF, FASTA, etc).
-Requires LightSaber base library.
-
-Has support for:
+Library for reading/writing microbiology DNA files (ABI, AB, AB1, SCF, FASTA, SEQ, etc).  
+Requires LightSaber base library.  
+  
+Has support for:  
  * SNP (Single Nucleotide Polymorphism)
  * QV (base Quality Value)
  * Integrated trimming engine (automatic bad-end trimming)
@@ -13,13 +13,13 @@ Has support for:
  * read/write SCF files  
  * read ABI/AB/AB1/AB! files  
  * read/write FASTA files  
- * read/write GeneBank (GBK) files.  
-  
-The import functionality is accessible with a call to a single function: TCubeImport.Import(FileName)  
-  
+ * read/write GeneBank (GBK) files.   
+    
+The import functionality is accessible with a call to a single function: TCubeImport.Import(FileName)    
+    
   TCube = class(TCubeAbstractSnp)    
-  public   
-   {IMPORT}   
+  public     
+   {IMPORT}     
    function  Import(CONST FileName: string): Boolean;                                                         { Fasta and GBK files are not supported because they may contain more than one sample! }  
    function  AssignGBK     (CONST Gbk : TGbkObj): Boolean;  
    function  AssignScf     (CONST SCF : TScfObj): boolean;  
