@@ -56,4 +56,6 @@ Code to import NextGen DNA sequence files such as SFF. SFQ, FAS.
       + Conversion to Fasta
       + BuildQVGraph   
       etc
-      
+
+
+[Details](https://gabrielmoraru.com)
