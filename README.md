@@ -3,13 +3,13 @@
 Library/package for reading/writing microbiology DNA sample/chromatogram files (ABI, AB, AB1, SCF, FASTA, SEQ, etc).   
 Requires LightSaber base library.  
   
-Has support for:  
- * SNP (Single Nucleotide Polymorphism)
- * QV (base Quality Value)
- * Integrated trimming engine (automatic bad-end trimming)
- * Recalling of bad (N) peaks using proprietary algorithm 
- * Automatic sequence direction (F/R)
- * Reading and displaying the chromatogram data
+Has support for:   
+ * SNP (Single Nucleotide Polymorphism)  
+ * QV (base Quality Value)  
+ * Integrated trimming engine (automatic bad-end trimming)  
+ * Recalling of bad (N) peaks using proprietary algorithm   
+ * Automatic sequence direction (F/R)  
+ * Reading and displaying the chromatogram data  
  * read/write SCF chromatogram files  
  * read ABI/AB/AB1/AB! chromatogram files  
  * read/write FASTA chromatogram files  
@@ -38,24 +38,24 @@ The import functionality is accessible with a call to a single function: TCubeIm
 
 -----------
 
-  Features:
-      + TrimEngine
-      + Assign(TSample)
-      + Average Quality
-      + Highest QV
-      + FindAdaptor
-      + Clip Left/Right
-      + Good Bases
-      + can work with sequences with length over 65535 bases
-      + Implements a single SFF read
+  Features:  
+      + TrimEngine  
+      + Assign(TSample)  
+      + Average Quality  
+      + Highest QV  
+      + FindAdaptor  
+      + Clip Left/Right  
+      + Good Bases  
+      + can work with sequences with length over 65535 bases  
+      + Implements a single SFF read  
       + NoOfGoodBases      
-      + GoodBases
-      + Conversion to Fasta
-      + BuildQVGraph   
-      etc
+      + GoodBases  
+      + Conversion to Fasta  
+      + BuildQVGraph     
+      etc  
 
 Next to come:   
- * Code to import NextGen DNA sequence files such as SFF. SFQ, FAS.  
+ * Code to import NextGen DNA sequence files such as SFF. SFQ, FAS.    
  * DNA sequence assembly  
  * SNMP / Mutation detection  
 
