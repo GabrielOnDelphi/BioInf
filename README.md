@@ -1,6 +1,6 @@
-# BioInf
+# BioInf - Delphi Bioinformatics library
 
-Library for reading/writing microbiology DNA files (ABI, AB, AB1, SCF, FASTA, SEQ, etc).  
+Library/package for reading/writing microbiology DNA sample/chromatogram files (ABI, AB, AB1, SCF, FASTA, SEQ, etc).   
 Requires LightSaber base library.  
   
 Has support for:  
@@ -10,10 +10,10 @@ Has support for:
  * Recalling of bad (N) peaks using proprietary algorithm 
  * Automatic sequence direction (F/R)
  * Reading and displaying the chromatogram data
- * read/write SCF files  
- * read ABI/AB/AB1/AB! files  
- * read/write FASTA files  
- * read/write GeneBank (GBK) files.   
+ * read/write SCF chromatogram files  
+ * read ABI/AB/AB1/AB! chromatogram files  
+ * read/write FASTA chromatogram files  
+ * read/write GeneBank (GBK) chromatogram files.   
     
 The import functionality is accessible with a call to a single function: TCubeImport.Import(FileName)    
     
@@ -38,9 +38,6 @@ The import functionality is accessible with a call to a single function: TCubeIm
 
 -----------
 
-Next to come:   
-Code to import NextGen DNA sequence files such as SFF. SFQ, FAS.
-
   Features:
       + TrimEngine
       + Assign(TSample)
@@ -57,5 +54,10 @@ Code to import NextGen DNA sequence files such as SFF. SFQ, FAS.
       + BuildQVGraph   
       etc
 
+Next to come:   
+ * Code to import NextGen DNA sequence files such as SFF. SFQ, FAS.  
+ * DNA sequence assembly  
+ * SNMP / Mutation detection  
 
+   
 [Details](https://gabrielmoraru.com)
